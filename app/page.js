@@ -35,7 +35,15 @@ export default function Home() {
       const canvas = canvasRef.current;
 
       const assets = {
-        font: new pc.Asset("font", "font", { url: "/Roboto-Regular.json" }),
+        font: new pc.Asset("font", "font", {
+          url: "/Roboto-Regular.json",
+        }),
+        navigateButton: new pc.Asset("buttonImage", "texture", {
+          url: "Navigate-Button.png",
+        }),
+        navigateButtonHover: new pc.Asset("buttonImage", "texture", {
+          url: "Navigate-Button-Hover.png",
+        }),
       };
 
       const device = await pc.createGraphicsDevice(canvas);
@@ -97,18 +105,29 @@ export default function Home() {
         });
         app.root.addChild(screen);
 
+        const container = new pc.Entity();
+        container.addComponent("element", {
+          anchor: [1, 0, 1, 0],
+          height: 67 + 60,
+          pivot: [1, 0],
+          width: 208 + 60,
+        });
+
+        screen.addChild(container);
+
         // Button
         const button = new pc.Entity();
         button.addComponent("button");
         button.addComponent("element", {
           anchor: [0.5, 0.5, 0.5, 0.5],
-          height: 40,
+          height: 67,
           pivot: [0.5, 0.5],
           type: pc.ELEMENTTYPE_IMAGE,
-          width: 175,
+          width: 208,
           useInput: true,
+          textureAsset: assets.navigateButton,
         });
-        screen.addChild(button);
+        container.addChild(button);
 
         const textBasic = new pc.Entity();
         textBasic.setLocalPosition(0, 200, 0);
@@ -127,12 +146,12 @@ export default function Home() {
         const label = new pc.Entity();
         label.addComponent("element", {
           anchor: [0.5, 0.5, 0.5, 0.5],
-          color: new pc.Color(0, 0, 0),
+          color: pc.Color.WHITE,
           fontAsset: assets.font.id,
-          fontSize: 32,
+          fontSize: 24,
           height: 64,
           pivot: [0.5, 0.5],
-          text: "CLICK ME",
+          text: "Navigate",
           type: pc.ELEMENTTYPE_TEXT,
           width: 128,
           wrapLines: true,
@@ -149,12 +168,10 @@ export default function Home() {
         });
 
         button.button.on("hoverstart", () => {
-          // Change the button's appearance or properties on hover start
-          button.element.color = new pc.Color(0.7, 0.7, 0.7); // Example: Change color to white
+          button.element.textureAsset = assets.navigateButtonHover;
         });
         button.button.on("hoverend", () => {
-          // Change the button's appearance or properties on hover start
-          button.element.color = new pc.Color(1, 1, 1); // Example: Change color to white
+          button.element.textureAsset = assets.navigateButton;
         });
         app.on("update", (dt) => {});
       });
