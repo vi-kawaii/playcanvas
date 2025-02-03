@@ -6,6 +6,21 @@ export default function Home() {
   const canvasRef = useRef();
 
   useEffect(() => {
+    document.addEventListener("gesturestart", function (e) {
+      e.preventDefault();
+      document.body.style.zoom = 1;
+    });
+
+    document.addEventListener("gesturechange", function (e) {
+      e.preventDefault();
+
+      document.body.style.zoom = 1;
+    });
+    document.addEventListener("gestureend", function (e) {
+      e.preventDefault();
+      document.body.style.zoom = 1;
+    });
+
     addEventListener("click", function () {
       var el = document.documentElement,
         rfs =
@@ -46,7 +61,7 @@ export default function Home() {
       font: new pc.Asset("font", "font", { url: "/Roboto-Regular.json" }),
     };
 
-    app.graphicsDevice.maxPixelRatio = Math.min(window.devicePixelRatio, 2);
+    app.graphicsDevice.maxPixelRatio = 10;
 
     const assetListLoader = new pc.AssetListLoader(
       Object.values(assets),
@@ -61,7 +76,7 @@ export default function Home() {
         pivot: new pc.Vec2(0.5, 0.5),
         anchor: new pc.Vec4(0.5, 0.5, 0.5, 0.5),
         fontAsset: assets.font.id,
-        fontSize: 20,
+        fontSize: 40,
         text: "Hello world",
         type: pc.ELEMENTTYPE_TEXT,
         color: pc.Color.BLACK,
